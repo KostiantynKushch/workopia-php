@@ -42,3 +42,26 @@ function loadPartial($name)
     echo "Partial '{$name}' not found! Please ensure the file exists at the specified path: '{$path}'.";
   }
 }
+
+/**
+ * Inspect variable
+ * @param mixed $value
+ * @return void
+ */
+function inspect($value)
+{
+  echo '<pre>';
+  var_dump($value);
+  echo '</pre>';
+}
+
+/**
+ * Inspect variable and die
+ * @param mixed $value
+ * @return void
+ */
+function inspectAndDie($value)
+{
+  inspect($value);
+  die();
+}
