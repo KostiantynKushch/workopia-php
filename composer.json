@@ -1,0 +1,16 @@
+{
+  "name" : "kostiantynkushch/workopia-php",
+  "description": "Job listings application",
+  "authors" : [
+    {
+      "name": "Kos Kushch",
+      "email": "test@email.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+}
