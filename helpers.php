@@ -85,6 +85,19 @@ function formatSalary($salary)
  * @param string $data
  * @return string
  */
-function sanitize($data){
+function sanitize($data)
+{
   return filter_var(trim($data), FILTER_SANITIZE_SPECIAL_CHARS);
+}
+
+/**
+ * Redirect to a given urldecode
+ *
+ * @param string $url
+ * @return void
+ */
+function redirect($url)
+{
+  header("Location: {$url}");
+  exit;
 }
