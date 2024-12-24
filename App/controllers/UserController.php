@@ -68,6 +68,18 @@ class UserController
       $errors['password_confirmation'] = 'Passwords do not match';
     }
 
+    // Check if email already exist
+    $params = [
+      'email' => $email,
+    ];
+
+    if (!isset($errors['email'])) {
+      $user = $this->db->query('SELECT * FROM users WHERE email = :email', $params)->fetch();
+      if ($user) {
+        $errors['email_exist'] = 'Can\'t create user with this email';
+      }
+    }
+
     if (!empty($errors)) {
       loadView('users/create', [
         'errors' => $errors,
@@ -79,8 +91,21 @@ class UserController
         ]
       ]);
       exit;
-    } else {
-      inspectAndDie($_POST);
     }
+
+    // Create user account
+    $params = [
+      'name' => $name,
+      'email' => $email,
+      'city' => $city,
+      'state' => $state,
+      'password' => password_hash($password, PASSWORD_DEFAULT),
+    ];
+
+    $userData = Database::fieldsAndValues($params);
+
+    $this->db->query("INSERT INTO users {$userData}", $params);
+
+    redirect('/');
   }
 }

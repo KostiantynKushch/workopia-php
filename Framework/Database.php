@@ -1,4 +1,5 @@
 <?php
+
 namespace Framework;
 
 use PDO;
@@ -41,7 +42,7 @@ class Database
   {
     try {
       $sth = $this->conn->prepare($query);
-      
+
       // Bind named params
       foreach ($params as $param => $value) {
         $sth->bindValue(':' . $param, $value);
@@ -52,5 +53,31 @@ class Database
     } catch (PDOException $e) {
       throw new Exception("Query failed to execute: {$e->getMessage()}");
     }
+  }
+
+
+  /**
+   * Convert array of data into query string with fields and values to insert in DB
+   *
+   * @param array $data
+   * @return string // ({$fields}) VALUES ({$values})
+   */
+  public static function fieldsAndValues($data)
+  {
+    $fields = [];
+    $values = [];
+
+    foreach ($data as $field => $value) {
+      $fields[] = $field;
+      if ($value === '') {
+        $data[$field] = null;
+      }
+      $values[] = ':' . $field;
+    }
+
+    $fields = implode(', ', $fields);
+    $values = implode(', ', $values);
+
+    return "($fields) VALUES ($values)";
   }
 }

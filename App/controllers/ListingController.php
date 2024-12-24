@@ -97,21 +97,9 @@ class ListingController
       ]);
     } else {
       // Submit data
-      $fields = [];
-      $values = [];
+      $postData = Database::fieldsAndValues($newListingData);
 
-      foreach ($newListingData as $field => $value) {
-        $fields[] = $field;
-        if ($value === '') {
-          $newListingData[$field] = null;
-        }
-        $values[] = ':' . $field;
-      }
-
-      $fields = implode(', ', $fields);
-      $values = implode(', ', $values);
-
-      $query = "INSERT INTO listings ({$fields}) VALUES ({$values})";
+      $query = 'INSERT INTO listings ' . $postData;
 
       $this->db->query($query, $newListingData);
 
@@ -201,7 +189,7 @@ class ListingController
     $requiredFields = ['title', 'description', 'salary', 'email', 'city', 'state'];
 
     $errors = [];
-    
+
     foreach ($requiredFields as $field) {
       if (empty($updateValues[$field]) || !Validation::string($updateValues[$field])) {
         $errors[$field] = ucfirst($field) . ' is required';
@@ -235,8 +223,5 @@ class ListingController
 
       redirect('/listings/' . $id);
     }
-
-
-    
   }
 }
